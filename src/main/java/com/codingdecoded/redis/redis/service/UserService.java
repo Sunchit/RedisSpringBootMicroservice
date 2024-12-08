@@ -24,11 +24,12 @@ public class UserService {
 
     private final ObjectMapper objectMapper = new ObjectMapper(); // Jackson ObjectMapper instance
 
-    public User createUser(User newUser) {
+    public User createUser(User newUser) throws Exception {
         User savedUser = userRepository.save(newUser);
+        String userForCache=objectMapper.writeValueAsString(savedUser);
         // Cache the newly created user in Redis
         ValueOperations<String, String> valueOps = redisTemplate.opsForValue();
-        valueOps.set("user:" + savedUser.getId(), savedUser.toString(), 100, TimeUnit.SECONDS);
+        valueOps.set("user:" + savedUser.getId(), userForCache, 100, TimeUnit.SECONDS);
         return savedUser;
     }
 
