@@ -19,7 +19,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody User newUser) {
+    public ResponseEntity<String> createUser(@RequestBody User newUser) throws Exception{
         User user = userService.createUser(newUser);
         return ResponseEntity.status(HttpStatus.CREATED).body("User created with ID: " + user.getId());
     }
